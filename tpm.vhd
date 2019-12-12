@@ -330,7 +330,11 @@ begin
                 end loop;
             elsif(enable_calc_h = '1') then
                 for i in 0 to K-1 loop
-                    h(i) := h(i) + to_integer(tpm_w(i, counter_col) * tpm_x(i, counter_col));
+                    if (tpm_x(i, counter_col)(7) = '1') then
+                        h(i) := h(i) + to_integer(-tpm_w(i, counter_col));
+                    else
+                        h(i) := h(i) + to_integer(tpm_w(i, counter_col));
+                    end if;
                 end loop;
             elsif(enable_calc_o = '1') then
                 for i in 0 to K-1 loop
