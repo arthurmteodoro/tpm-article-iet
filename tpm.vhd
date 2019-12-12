@@ -310,7 +310,11 @@ begin
                 h := 0;
             elsif(enable_calc_o = '1') then
                 for i in 0 to N-1 loop
-                    h := h + to_integer(tpm_w(counter, i) * tpm_x(counter, i));
+                    if (tpm_x(counter, i)(7) = '1') then
+                        h := h + to_integer(-tpm_w(counter, i));
+                    else
+                        h := h + to_integer(tpm_w(counter, i));
+                    end if;
                 end loop;
                 tpm_o(counter) <= sign(h);
             end if;
