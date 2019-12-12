@@ -250,8 +250,8 @@ begin
         report "Carregando o Y de Bob";
         address <= "00000101";
         write_req <= '1';
-        data_in <= (31 downto 0 => '1');
-        --data_in <= (31 downto 1 => '0')  & '1';
+        --data_in <= (31 downto 0 => '1');
+        data_in <= (31 downto 1 => '0')  & '1';
 
         wait for clk_period;
 
