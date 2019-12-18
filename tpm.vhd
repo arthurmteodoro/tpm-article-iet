@@ -12,6 +12,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
+library work;
+use work.types.all;
+
 entity tpm is generic(
     K : natural := 3; -- quantidade de neuronios da camada escondida
     N : natural := 4; -- quantidade de neuronios de entrada para cada neuronio da camada de entrada
@@ -86,10 +89,6 @@ architecture behavior of tpm is
     ---------------------------------------------------------------------------------------------
     -- DEFINICAO DOS TIPOS                                                                     --
     ---------------------------------------------------------------------------------------------
-    type vector_of_byte is array(integer range <>) of signed(7 downto 0); -- vetor de bytes para o valor de sigma
-    type matrix_of_byte is array(integer range <>, integer range <>) of signed(7 downto 0); -- matriz de bytes para os pesos e entrada
-    type vector_of_word is array(integer range <>) of std_logic_vector(31 downto 0); -- vetor de 32 bits para o valor do gerador de x
-    type vector_of_std_logic is array(integer range <>) of std_logic; -- vetor de std_logic para controle dos lfsrs de 32 bits
     
     ---------------------------------------------------------------------------------------------
     -- DEFINICAO DOS SINAIS                                                                    --
