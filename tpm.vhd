@@ -14,10 +14,10 @@ use ieee.math_real.all;
 
 entity tpm is generic(
     K : natural := 3; -- quantidade de neuronios da camada escondida
-    N : natural := 4; -- quantidade de neuronios de entrada para cada neuronio da camada de entrada
+    N : natural := 32; -- quantidade de neuronios de entrada para cada neuronio da camada de entrada
     L : natural := 5; -- valor limite para os pesos dos neuronios (-L ate L)
     RULE : string := "hebbian";
-    PART : natural := 2
+    PART : natural := 8
 ); port (
     clk : in std_logic; -- clock do sistema
     reset : in std_logic; -- reset assincrono ativo em alto
@@ -321,14 +321,18 @@ begin
                 for i in 0 to PART-1 loop
                     h := 0;
                     for j in 0 to (N/PART)-1 loop
-                        h := h + to_integer(tpm_w(counter, (i * matrix_split_size + j)) * tpm_x(counter, (i * matrix_split_size + j)));
+                        if (tpm_x(counter, (i * matrix_split_size + j))(7) = '1') then
+                            h := h + to_integer(-tpm_w(counter, (i * matrix_split_size + j)));
+                        else
+                            h := h + to_integer(tpm_w(counter, (i * matrix_split_size + j)));
+                        end if;
                     end loop;
                     tpm_h(counter, i) <= to_signed(h, 16);
                 end loop;
             elsif (enable_calc_h = '1') then
                 for i in 0 to K-1 loop
                     h := 0;
-                    for j in 0 to (N/PART)-1 loop
+                    for j in 0 to PART-1 loop
                         h := h + to_integer(tpm_h(i, j));
                     end loop;
                     tpm_o(i) <= sign(h);
