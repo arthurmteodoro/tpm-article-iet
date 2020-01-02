@@ -14,10 +14,10 @@ use ieee.math_real.all;
 
 entity tpm is generic(
     K : natural := 3; -- quantidade de neuronios da camada escondida
-    N : natural := 32; -- quantidade de neuronios de entrada para cada neuronio da camada de entrada
+    N : natural := 4; -- quantidade de neuronios de entrada para cada neuronio da camada de entrada
     L : natural := 5; -- valor limite para os pesos dos neuronios (-L ate L)
     RULE : string := "hebbian";
-    PART : natural := 8
+    PART : natural := 2
 ); port (
     clk : in std_logic; -- clock do sistema
     reset : in std_logic; -- reset assincrono ativo em alto
@@ -155,7 +155,7 @@ architecture behavior of tpm is
     ---------------------------------------------------------------------------------------------
     -- DEFINICAO DOS TIPOS E SINAIS PARA A MAQUINA DE ESTADOS                                  --
     ---------------------------------------------------------------------------------------------
-    type state is (idle, load_seed, load_seed_comp, generate_w, generate_new_input_x, load_x, calc_h, calc_h_dummy,
+    type state is (idle, load_seed, load_seed_comp, generate_w, generate_new_input_x, load_x, calc_h,
                    calc_o, calc_y, exit_w,load_bob_y, update_w, update_clip_w, exit_y, load_seed_x, load_seed_comp_x, 
                    exit_x, exit_o);
     
@@ -712,37 +712,6 @@ begin
                 enable_calc_o <= '0';
                 enable_calc_h <= '1';
                 clear_h <= '0';
-                clear_y <= '0';
-                enable_calc_y <= '0';
-                enable_counter_simple <= '0';
-                enable_load_y_bob <= '0';
-                enable_update_w <= '0';
-                enable_clip_w <= '0';
-                enable_exit_w <= '0';
-                enable_exit_y <= '0';
-                enable_load_seed_lfsr32 <= '0';
-                
-                enable_exit_x <= '0';
-                enable_exit_o <= '0';
-                
-                for i in 0 to K-1 loop
-                    enable_for_lfsr32(i) <= '0';
-                    load_seed_for_lfsr32(i) <= '0';
-                end loop;
-                
-                next_state <= calc_h_dummy;
-                
-            when calc_h_dummy =>
-                busy <= '1';
-                load_seed_for_lfsr <= '0';
-                enable_for_lfsr <= '0';
-                enable_load_seed_lfsr <= '0';
-                enable_generate_w <= '0';
-                enable_counter <= '0';
-                enable_load_x <= '0';
-                enable_calc_o <= '0';
-                enable_calc_h <= '0';
-                clear_h <= '1';
                 clear_y <= '0';
                 enable_calc_y <= '0';
                 enable_counter_simple <= '1';
